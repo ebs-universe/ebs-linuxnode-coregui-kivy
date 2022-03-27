@@ -17,7 +17,7 @@ class FontsGuiMixin(BaseGuiMixin):
         return self._text_font_context
 
     def _text_create_fcm(self):
-        fc = self._appname
+        fc = self.appname
         if self.config.text_fcm_system:
             fc = "system://{0}".format(fc)
         self._text_font_context = fc

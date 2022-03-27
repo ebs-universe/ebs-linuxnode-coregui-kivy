@@ -1,7 +1,6 @@
 
 
-from ebs.linuxnode.core.basenode import BaseIoTNode
-
+import os
 from .background import OverlayWindowGuiMixin
 from .text import FontsGuiMixin
 from .log import LoggingGuiMixin
@@ -19,6 +18,12 @@ class BaseIoTNodeGui(NodeIDGuiMixin,
         self._application = kwargs.pop('application')
         self._gui_root = None
         super(BaseIoTNodeGui, self).__init__(*args, **kwargs)
+
+    def install(self):
+        super(BaseIoTNodeGui, self).install()
+        self.config.register_application_root(
+            os.path.abspath(os.path.dirname(__file__))
+        )
 
     @staticmethod
     def _gui_disable_multitouch_emulation():

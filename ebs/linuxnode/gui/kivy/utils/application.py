@@ -7,6 +7,8 @@ from ebs.linuxnode.gui.kivy.core.basenode import BaseIoTNodeGui
 
 
 class BaseIOTNodeApplication(App):
+    _node_class = BaseIoTNodeGui
+
     def __init__(self, config, *args, **kwargs):
         self._config = config
         self._debug = kwargs.pop('debug', False)
@@ -14,14 +16,18 @@ class BaseIOTNodeApplication(App):
         self._node = None
 
     def build(self):
-        print("Constructing Node")
-        self._node = BaseIoTNodeGui(reactor=reactor, application=self)
+        print("Constructing Node : {}".format(self._node_class))
+        self._node = self._node_class(reactor=reactor, application=self)
         print("Installing Node Resources")
         self._node.install()
         print("Building GUI for node {0}".format(self._node))
         return self._node.gui_setup()
 
     def on_start(self):
+        print("Starting Application : {}".format(self))
+        print("Using Application Roots :")
+        for root in self._config.roots:
+            print("  ", root)
         self._node.start()
 
     def on_stop(self):
