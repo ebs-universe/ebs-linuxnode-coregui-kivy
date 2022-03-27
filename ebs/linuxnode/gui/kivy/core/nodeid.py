@@ -6,6 +6,7 @@ from kivy_garden.ebs.core.labels import ColorLabel
 from kivy_garden.ebs.core.colors import color_set_alpha
 
 from .basemixin import BaseGuiMixin
+from ebs.linuxnode.core.config import ElementSpec, ItemSpec
 
 
 class NodeIDGuiMixin(BaseGuiMixin):
@@ -16,6 +17,16 @@ class NodeIDGuiMixin(BaseGuiMixin):
         super(NodeIDGuiMixin, self).__init__(*args, **kwargs)
         self._gui_id_tag = None
         self._gui_id_task = None
+
+    def install(self):
+        super(NodeIDGuiMixin, self).install()
+        _elements = {
+            'node_id_display': ElementSpec('id', 'display', ItemSpec(bool, fallback=False)),
+            'node_id_display_frequency': ElementSpec('id', 'display_frequency', ItemSpec(int, fallback=0)),
+            'node_id_display_duration': ElementSpec('id', 'display_duration', ItemSpec(int, fallback=15)),
+        }
+        for name, spec in _elements.items():
+            self.config.register_element(name, spec)
 
     @property
     def gui_id_tag(self):

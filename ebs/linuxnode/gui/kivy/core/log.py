@@ -12,6 +12,7 @@ from kivy.utils import get_hex_from_color
 
 from kivy_garden.ebs.core.labels import ColorLabel
 from ebs.linuxnode.core.log import NodeLoggingMixin
+from ebs.linuxnode.core.config import ElementSpec, ItemSpec
 from .basemixin import BaseGuiMixin
 
 
@@ -23,6 +24,15 @@ class LoggingGuiMixin(BaseGuiMixin):
         self._gui_log_scroll = None
         self._gui_log_lines = deque([], maxlen=100)
         super(LoggingGuiMixin, self).__init__(*args, **kwargs)
+
+    def install(self):
+        super(LoggingGuiMixin, self).install()
+        _elements = {
+            'gui_log_display': ElementSpec('debug', 'gui_log_display', ItemSpec(bool, fallback=False)),
+            'gui_log_level': ElementSpec('debug', 'gui_log_level', ItemSpec(fallback='info')),
+        }
+        for name, spec in _elements.items():
+            self.config.register_element(name, spec)
 
     def _observers(self):
         rv = NodeLoggingMixin._observers(self)

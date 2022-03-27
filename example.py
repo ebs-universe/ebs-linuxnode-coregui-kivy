@@ -32,7 +32,7 @@ def run_node():
 
         def on_start(self):
             # Config is ready by this point, as long as config elements and
-            # application are roots are all registered in the install()
+            # application roots are all registered in the install()
             # call-chain.
             self._config.print()
             super(ExampleApplication, self).on_start()

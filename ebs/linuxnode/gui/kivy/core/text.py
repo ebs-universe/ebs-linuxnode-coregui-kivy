@@ -2,6 +2,7 @@
 
 import os
 from kivy.core.text import FontContextManager
+from ebs.linuxnode.core.config import ElementSpec, ItemSpec
 from .basemixin import BaseGuiMixin
 
 
@@ -9,6 +10,17 @@ class FontsGuiMixin(BaseGuiMixin):
     def __init__(self, *args, **kwargs):
         self._text_font_context = None
         super(FontsGuiMixin, self).__init__(*args, **kwargs)
+
+    def install(self):
+        super(FontsGuiMixin, self).install()
+        _elements = {
+            'text_font_name': ElementSpec('text', 'font_name', ItemSpec(fallback=None)),
+            'text_use_fcm': ElementSpec('text', 'use_fcm', ItemSpec(bool, fallback=False)),
+            'text_fcm_system': ElementSpec('text', 'fcm_system', ItemSpec(bool, fallback=True)),
+            'text_fcm_fonts': ElementSpec('text', 'fcm_fonts', ItemSpec(fallback=None)),
+        }
+        for name, spec in _elements.items():
+            self.config.register_element(name, spec)
 
     @property
     def text_font_context(self):
