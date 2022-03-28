@@ -8,8 +8,8 @@ class BaseGuiMixin(BaseGuiStructureMixin):
     _palette = GuiPalette(
         background=(0x00 / 255, 0x00 / 255, 0x00 / 255),
         foreground=(0xff / 255, 0xff / 255, 0xff / 255),
-        color_1=(0xff / 255, 0xff / 255, 0xff / 255),
-        color_2=(0xff / 255, 0xff / 255, 0xff / 255)
+        color_1=(0x00 / 255, 0x00 / 255, 0xff / 255),
+        color_2=(0xff / 255, 0x00 / 255, 0x00 / 255)
     )
 
     def gui_setup(self):

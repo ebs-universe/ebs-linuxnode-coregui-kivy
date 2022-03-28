@@ -1,5 +1,7 @@
 
 import os
+import shutil
+import appdirs
 import subprocess
 
 from kivy.core.window import Window
@@ -27,9 +29,16 @@ class BackgroundGuiMixin(BaseGuiMixin):
 
     def install(self):
         super(BackgroundGuiMixin, self).install()
+
+        _path = os.path.abspath(os.path.dirname(__file__))
+        fallback_default = os.path.join(_path, 'images/background.png')
+        fallback = os.path.join(appdirs.user_config_dir(self.config.appname), 'background.png')
+        if not os.path.exists(fallback):
+            shutil.copy(fallback_default, fallback)
+
         _elements = {
             'image_bgcolor': ElementSpec('display', 'image_bgcolor', ItemSpec('kivy_color', fallback='auto')),
-            'background': ElementSpec('display', 'background', ItemSpec(str, read_only=False, fallback='images/background.png')),
+            'background': ElementSpec('display', 'background', ItemSpec(str, read_only=False, fallback=fallback)),
         }
         for name, spec in _elements.items():
             self.config.register_element(name, spec)
@@ -61,9 +70,7 @@ class BackgroundGuiMixin(BaseGuiMixin):
 
     @property
     def gui_bg_container(self):
-        print("Check BG container")
         if self._bg_container is None:
-            print("Create BG container")
             self._bg_container = BoxLayout()
             self.gui_main_content.add_widget(self._bg_container)
         return self._bg_container
@@ -161,7 +168,6 @@ class BackgroundGuiMixin(BaseGuiMixin):
 
     @gui_bg.setter
     def gui_bg(self, value):
-        print("Setting BG to ", value)
         self.log.info("Setting background to {value}", value=value)
         if self.bg_is_file(value) and not os.path.exists(value):
             value = self.config.background

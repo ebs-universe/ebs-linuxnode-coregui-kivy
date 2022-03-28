@@ -4,46 +4,14 @@ _requires = [
     'six',
     'setuptools-scm',
     'appdirs',
-    'Cython',
-    'twisted[tls]',
-    'SQLAlchemy',
     'kivy>=1.11.1',
     'kivy-garden',
-    'arrow',
-    'raspi_system',
 
     # ebs Widgets
     'kivy_garden.ebs.core',
     'kivy_garden.ebs.progressspinner',
 
-    # Node Id
-    'netifaces',
-
-    # System
-    'ifcfg',
-
-    # BleedImage
-    'colorthief',
-    
-    # HTTP Client
-    'treq',
-
-    # Event Manager
-    'cached_property',
-    'pqueue',
-
-    # Browser
-    'selenium',
-
-    # RPi Mediaplayer
-    'omxplayer-wrapper',
-    'pymediainfo',
-
-    # PdfPlayer
-    'pdf2image',
-
-    # Text and Localization
-    'hoshi',
+    'ebs-linuxnode-core',
 ]
 
 setuptools.setup(
@@ -57,9 +25,10 @@ setuptools.setup(
     long_description='',
 
     packages=setuptools.find_packages(),
-    # package_dir={'ebs.linuxnode.gui.kivy': 'ebs/iot/linuxnode'},
-    # package_data={'ebs.iot.linuxnode': ['images/no-internet.png',
-    #                                     'images/no-server.png']},
+    package_dir={'ebs.linuxnode.gui.kivy.core': 'ebs/linuxnode/gui/kivy/core'},
+    package_data={'ebs.linuxnode.gui.kivy.core': ['images/background.png',
+                                                  'images/no-internet.png',
+                                                  'images/no-server.png']},
 
     install_requires=_requires,
 
