@@ -35,6 +35,7 @@ def run_node():
             # application roots are all registered in the install()
             # call-chain.
             self._config.print()
+            # Application Roots should also be ready before this
             super(ExampleApplication, self).on_start()
 
     print("Creating Application : {}".format(ExampleApplication))

@@ -8,6 +8,7 @@ from kivy.uix.boxlayout import BoxLayout
 from six.moves.urllib.parse import urlparse
 
 from kivy_garden.ebs.core.image import BleedImage
+from ebs.linuxnode.core.config import ElementSpec, ItemSpec
 from .basemixin import BaseGuiMixin
 
 
@@ -23,6 +24,15 @@ class BackgroundGuiMixin(BaseGuiMixin):
         self._bg_container = None
         self._bg_current = None
         super(BackgroundGuiMixin, self).__init__(*args, **kwargs)
+
+    def install(self):
+        super(BackgroundGuiMixin, self).install()
+        _elements = {
+            'image_bgcolor': ElementSpec('display', 'image_bgcolor', ItemSpec('kivy_color', fallback='auto')),
+            'background': ElementSpec('display', 'background', ItemSpec(str, read_only=False, fallback='images/background.png')),
+        }
+        for name, spec in _elements.items():
+            self.config.register_element(name, spec)
 
     def bg_is_structured(self, value):
         return value.startswith(self._bg_structured_prefix)
@@ -51,7 +61,9 @@ class BackgroundGuiMixin(BaseGuiMixin):
 
     @property
     def gui_bg_container(self):
+        print("Check BG container")
         if self._bg_container is None:
+            print("Create BG container")
             self._bg_container = BoxLayout()
             self.gui_main_content.add_widget(self._bg_container)
         return self._bg_container
@@ -149,6 +161,7 @@ class BackgroundGuiMixin(BaseGuiMixin):
 
     @gui_bg.setter
     def gui_bg(self, value):
+        print("Setting BG to ", value)
         self.log.info("Setting background to {value}", value=value)
         if self.bg_is_file(value) and not os.path.exists(value):
             value = self.config.background
@@ -213,13 +226,24 @@ class OverlayWindowGuiMixin(BackgroundGuiMixin):
         self._foundation_process = None
         super(OverlayWindowGuiMixin, self).__init__(*args, **kwargs)
 
+    def install(self):
+        super(OverlayWindowGuiMixin, self).install()
+        _elements = {
+            'overlay_mode': ElementSpec('display', 'overlay_mode', ItemSpec(bool, fallback=False)),
+            'show_foundation': ElementSpec('display-rpi', 'show_foundation', ItemSpec(bool, fallback=True)),
+            'dispmanx_foundation_layer': ElementSpec('display-rpi', 'dispmanx_foundation_layer', ItemSpec(int, fallback=1)),
+            'foundation_image': ElementSpec('display-rpi', 'foundation_image', ItemSpec(fallback=None)),
+        }
+        for name, spec in _elements.items():
+            self.config.register_element(name, spec)
+
     @property
     def overlay_mode(self):
         return self._overlay_mode
 
     @overlay_mode.setter
     def overlay_mode(self, value):
-        if not self._gui_supports_overlay_mode:
+        if not self._gui_supports_overlay_mode and value:
             self.log.warn("Application tried to change overlay mode, "
                           "not supported this platform.")
             return

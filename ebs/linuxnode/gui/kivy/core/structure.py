@@ -35,7 +35,19 @@ class BaseGuiStructureMixin(BaseIoTNode):
 
     def install(self):
         super(BaseGuiStructureMixin, self).install()
-        # self.config.register_element()
+        _elements = {
+            'sidebar_width': ElementSpec('display', 'sidebar_width', ItemSpec(float, fallback=0.3)),
+            'sidebar_height_specific': ElementSpec('display', 'sidebar_height', ItemSpec(float, fallback=0.0)),
+            'sidebar_height': ElementSpec('_derived', self._sidebar_height),
+        }
+        for name, spec in _elements.items():
+            self.config.register_element(name, spec)
+
+    def _sidebar_height(self, config):
+        if config.sidebar_height_specific:
+            return config.sidebar_height_specific
+        else:
+            return config.sidebar_width
 
     @property
     def gui_anchor_bottom_right(self):

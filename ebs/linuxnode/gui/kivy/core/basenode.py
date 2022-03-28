@@ -6,13 +6,15 @@ from .text import FontsGuiMixin
 from .log import LoggingGuiMixin
 from .busy import BusySpinnerGuiMixin
 from .nodeid import NodeIDGuiMixin
+from .display import DisplayMixin
 
 
 class BaseIoTNodeGui(NodeIDGuiMixin,
                      BusySpinnerGuiMixin,
                      LoggingGuiMixin,
                      FontsGuiMixin,
-                     OverlayWindowGuiMixin):
+                     OverlayWindowGuiMixin,
+                     DisplayMixin):
 
     def __init__(self, *args, **kwargs):
         self._application = kwargs.pop('application')
