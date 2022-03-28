@@ -16,12 +16,12 @@ _requires = [
 
 setuptools.setup(
     name='ebs-linuxnode-gui-kivy-core',
-    url='',
+    url='https://github.com/ebs-universe/ebs-linuxnode-coregui-kivy',
 
     author='Chintalagiri Shashank',
     author_email='shashank.chintalagiri@gmail.com',
 
-    description='',
+    description='Kivy GUI Core for EBS Linuxnode Applications',
     long_description='',
 
     packages=setuptools.find_packages(),
