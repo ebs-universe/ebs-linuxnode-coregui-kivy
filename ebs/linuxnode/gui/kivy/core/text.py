@@ -14,10 +14,10 @@ class FontsGuiMixin(BaseGuiMixin):
     def install(self):
         super(FontsGuiMixin, self).install()
         _elements = {
-            'text_font_name': ElementSpec('text', 'font_name', ItemSpec(fallback=None)),
+            'text_font_name': ElementSpec('text', 'font_name', ItemSpec('path', fallback=None)),
             'text_use_fcm': ElementSpec('text', 'use_fcm', ItemSpec(bool, fallback=False)),
             'text_fcm_system': ElementSpec('text', 'fcm_system', ItemSpec(bool, fallback=True)),
-            'text_fcm_fonts': ElementSpec('text', 'fcm_fonts', ItemSpec(fallback=None)),
+            'text_fcm_fonts': ElementSpec('text', 'fcm_fonts', ItemSpec('path', fallback=None)),
         }
         for name, spec in _elements.items():
             self.config.register_element(name, spec)
@@ -38,7 +38,7 @@ class FontsGuiMixin(BaseGuiMixin):
         FontContextManager.create(fc)
 
         for filename in os.listdir(self.config.text_fcm_fonts):
-            self.log.debug("Installing Font {0} to FCM {1}".format(filename, self._text_font_context))
+            self.log.info("Installing Font {0} to FCM {1}".format(filename, self._text_font_context))
             FontContextManager.add_font(fc, os.path.join(self.config.text_fcm_fonts, filename))
 
     @property

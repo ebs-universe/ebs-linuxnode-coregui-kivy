@@ -4,7 +4,7 @@ _requires = [
     'six',
     'setuptools-scm',
     'appdirs',
-    'kivy>=1.11.1',
+    'kivy>=2.1.0',
     'kivy-garden',
 
     # ebs Widgets
