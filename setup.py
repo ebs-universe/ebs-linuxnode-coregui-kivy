@@ -8,10 +8,10 @@ _requires = [
     'kivy-garden',
 
     # ebs Widgets
-    'kivy_garden.ebs.core',
-    'kivy_garden.ebs.progressspinner',
+    'kivy_garden.ebs.core>=1.3.0',
+    'kivy_garden.ebs.progressspinner>=1.2.0',
 
-    'ebs-linuxnode-core',
+    'ebs-linuxnode-core>=2.0.0',
 ]
 
 setuptools.setup(
