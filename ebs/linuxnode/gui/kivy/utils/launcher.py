@@ -7,19 +7,31 @@ from ebs.linuxnode.core.config import ItemSpec
 from ebs.linuxnode.core.config import ElementSpec
 
 
+def _orientation(config):
+    rv = 0
+    if config.portrait is True:
+        rv += 90
+    if config.flip:
+        rv += 180
+    return rv
+
+
 def prepare_config(appname):
     from ebs.linuxnode.core.config import IoTNodeConfig
     node_config = IoTNodeConfig(appname=appname)
 
-    for name, spec in [
-        ('platform', ElementSpec('platform', 'platform', ItemSpec(fallback='native'))),
-        ('fullscreen', ElementSpec('display', 'fullscreen', ItemSpec(bool, fallback=True))),
-        ('portrait', ElementSpec('display', 'portrait', ItemSpec(bool, fallback=False))),
-        ('flip', ElementSpec('display', 'flip', ItemSpec(bool, fallback=False))),
-        ('app_dispmanx_layer', ElementSpec('display-rpi', 'dispmanx_app_layer', ItemSpec(int, fallback=5)))
-    ]:
-        node_config.register_element(name, spec)
+    items = [
+            ('platform', ElementSpec('platform', 'platform', ItemSpec(fallback='native'))),
+            ('fullscreen', ElementSpec('display', 'fullscreen', ItemSpec(bool, fallback=True))),
+            ('portrait', ElementSpec('display', 'portrait', ItemSpec(bool, fallback=False))),
+            ('flip', ElementSpec('display', 'flip', ItemSpec(bool, fallback=False))),
+            ('app_dispmanx_layer', ElementSpec('display-rpi', 'dispmanx_app_layer', ItemSpec(int, fallback=5))),
+            ('orientation', ElementSpec('_derived', _orientation)),
+            ('os_rotation', ElementSpec('display', 'os_rotation', ItemSpec(bool, fallback=False)))
+    ]
 
+    for name, spec in items:
+        node_config.register_element(name, spec)
     return node_config
 
 
@@ -42,8 +54,8 @@ def prepare_kivy(node_config):
     if node_config.fullscreen is True:
         Config.set('graphics', 'fullscreen', 'auto')
 
-    # if config.current_config.orientation:
-    #     Config.set('graphics', 'rotation', nodeconfig.orientation)
+    if node_config.orientation:
+        Config.set('graphics', 'rotation', node_config.orientation)
 
     Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 
