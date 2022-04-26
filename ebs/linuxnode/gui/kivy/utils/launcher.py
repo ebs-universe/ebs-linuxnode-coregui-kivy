@@ -36,17 +36,20 @@ def prepare_config(appname):
 
 
 def prepare_environment(node_config):
-
+    print("Using pango Text Provider")
     os.environ['KIVY_TEXT'] = 'pango'
-    os.environ['KIVY_VIDEO'] = 'ffpyplayer'
-
     if node_config.platform == 'rpi':
         if hwinfo.is_pi4():
+            print("Using sdl2 Window Provider")
             os.environ['KIVY_WINDOW'] = 'sdl2'
         else:
+            print("Using egl_rpi Window Provider")
             os.environ['KIVY_WINDOW'] = 'egl_rpi'
         os.environ['KIVY_BCM_DISPMANX_LAYER'] = str(node_config.app_dispmanx_layer)
         print("Using app_dispmanx_layer {0}".format(node_config.app_dispmanx_layer))
+    else:
+        print("Using ffpyplayer Video Provider")
+        os.environ['KIVY_VIDEO'] = 'ffpyplayer'
 
 
 def prepare_kivy(node_config):
