@@ -3,6 +3,9 @@
 import os
 import shutil
 import appdirs
+import warnings
+from six.moves.urllib.parse import urlparse
+
 from kivy.uix.boxlayout import BoxLayout
 
 from ebs.linuxnode.core.config import ElementSpec, ItemSpec
@@ -10,6 +13,7 @@ from ebs.linuxnode.gui.kivy.core.basemixin import BaseGuiMixin
 
 from .image import ImageBackgroundProvider
 from .color import ColorBackgroundProvider
+from .structured import StructuredBackgroundProvider
 
 
 class BackgroundGuiMixin(BaseGuiMixin):
@@ -23,7 +27,7 @@ class BackgroundGuiMixin(BaseGuiMixin):
 
     def install_background_provider(self, provider):
         self.log.info("Installing BG Provider {}".format(provider))
-        self._bg_providers.append(provider)
+        self._bg_providers.insert(0, provider)
 
     def install(self):
         super(BackgroundGuiMixin, self).install()
@@ -41,25 +45,31 @@ class BackgroundGuiMixin(BaseGuiMixin):
         for name, spec in _elements.items():
             self.config.register_element(name, spec)
 
-        self.install_background_provider(ImageBackgroundProvider(self))
         self.install_background_provider(ColorBackgroundProvider(self))
+        self.install_background_provider(ImageBackgroundProvider(self))
+        self.install_background_provider(StructuredBackgroundProvider(self))
 
     def background_set(self, target):
+        warnings.warn("Deprecated access to background_set. Background config "
+                      "and resource management needs to be separately managed "
+                      "by calling code.")
+
         if not target:
             target = None
 
-        if self.bg_is_structured(fpath):
-            if not hasattr(self, fpath.split(self._bg_separator)[1]):
-                fpath = None
-        else:
-            if not os.path.exists(fpath):
-                fpath = None
+        provider: BackgroundProviderBase
+        provider = None
+        for lprovider in self._bg_providers:
+            if lprovider.check_support(value):
+                provider = lprovider
+                break
 
-        if self.config.background != fpath:
-            old_bg = os.path.basename(urlparse(self.config.background).path)
-            if self.bg_is_file(old_bg) and self.resource_manager.has(old_bg):
-                self.resource_manager.remove(old_bg)
-            self.config.background = fpath
+        if not provider:
+            self.log.warn("Provider not found for background {}. Not Setting.".format(value))
+            target = None
+
+        if self.config.background != target:
+            self.config.background = target
 
         self.gui_bg_update()
 
@@ -95,7 +105,7 @@ class BackgroundGuiMixin(BaseGuiMixin):
                 break
 
         if not provider:
-            self.log.warn("Providernot found for background {}".format(value))
+            self.log.warn("Provider not found for background {}".format(value))
             value = self.config.background
 
         if value == self._bg_current:
