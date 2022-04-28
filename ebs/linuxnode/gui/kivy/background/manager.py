@@ -4,13 +4,13 @@ import os
 import shutil
 import appdirs
 import warnings
-from six.moves.urllib.parse import urlparse
 
 from kivy.uix.boxlayout import BoxLayout
 
 from ebs.linuxnode.core.config import ElementSpec, ItemSpec
 from ebs.linuxnode.gui.kivy.core.basemixin import BaseGuiMixin
 
+from .base import BackgroundProviderBase
 from .image import ImageBackgroundProvider
 from .color import ColorBackgroundProvider
 from .structured import StructuredBackgroundProvider
@@ -49,6 +49,15 @@ class BackgroundGuiMixin(BaseGuiMixin):
         self.install_background_provider(ImageBackgroundProvider(self))
         self.install_background_provider(StructuredBackgroundProvider(self))
 
+    def _get_provider(self, target):
+        provider: BackgroundProviderBase
+        provider = None
+        for lprovider in self._bg_providers:
+            if lprovider.check_support(target):
+                provider = lprovider
+                break
+        return provider
+
     def background_set(self, target):
         warnings.warn("Deprecated access to background_set. Background config "
                       "and resource management needs to be separately managed "
@@ -57,15 +66,9 @@ class BackgroundGuiMixin(BaseGuiMixin):
         if not target:
             target = None
 
-        provider: BackgroundProviderBase
-        provider = None
-        for lprovider in self._bg_providers:
-            if lprovider.check_support(value):
-                provider = lprovider
-                break
-
+        provider = self._get_provider(target)
         if not provider:
-            self.log.warn("Provider not found for background {}. Not Setting.".format(value))
+            self.log.warn("Provider not found for background {}. Not Setting.".format(target))
             target = None
 
         if self.config.background != target:
@@ -95,18 +98,13 @@ class BackgroundGuiMixin(BaseGuiMixin):
     def gui_bg(self, value):
         self.log.info("Setting background to {value}", value=value)
 
-        provider: BackgroundProviderBase
-        provider = None
-        for lprovider in self._bg_providers:
-            if lprovider.check_support(value):
-                self.log.debug("Using provider {} to set bg to {}."
-                               "".format(lprovider.__class__, value))
-                provider = lprovider
-                break
+        provider = self._get_provider(value)
 
         if not provider:
             self.log.warn("Provider not found for background {}".format(value))
             value = self.config.background
+            provider = self._get_provider(value)
+            self.log.warn("Using {} instead.".format(value))
 
         if value == self._bg_current:
             return
