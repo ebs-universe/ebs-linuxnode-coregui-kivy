@@ -109,6 +109,7 @@ class BackgroundGuiMixin(BaseGuiMixin):
         if value == self._bg_current:
             return
 
+        self.log.debug("Using {} to show background {}".format(provider, value))
         self.gui_bg_clear()
 
         self._bg_current = value

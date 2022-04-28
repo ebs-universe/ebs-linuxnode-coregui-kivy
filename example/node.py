@@ -17,6 +17,7 @@ class ExampleNode(BaseIoTNodeGui):
         reactor.callLater(10, self._set_bg, '1.0:0.5:0.5:1.0')
         reactor.callLater(20, self._set_bg, 'image.jpg')
         reactor.callLater(30, self._set_bg, '0.5:1.0:0.5:1.0')
-        reactor.callLater(40, self._set_bg, 'structured:clock')
-        reactor.callLater(50, self._set_bg, None)
+        reactor.callLater(40, self._set_bg, None)
+        # Install kivy_garden.ebs.clocks
+        # reactor.callLater(50, self._set_bg, 'structured:clock')
         super(ExampleNode, self).start()
