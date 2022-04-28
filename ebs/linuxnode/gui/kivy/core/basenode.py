@@ -1,7 +1,7 @@
 
 
 import os
-from .background import OverlayWindowGuiMixin
+from ebs.linuxnode.gui.kivy.background.mixin import OverlayWindowGuiMixin
 from .text import FontsGuiMixin
 from .log import LoggingGuiMixin
 from .busy import BusySpinnerGuiMixin
