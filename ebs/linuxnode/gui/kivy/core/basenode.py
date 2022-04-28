@@ -27,12 +27,6 @@ class BaseIoTNodeGui(NodeIDGuiMixin,
             os.path.abspath(os.path.dirname(__file__))
         )
 
-    @staticmethod
-    def _gui_disable_multitouch_emulation():
-        from kivy.config import Config
-        Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
-
     def gui_setup(self):
-        self._gui_disable_multitouch_emulation()
         super(BaseIoTNodeGui, self).gui_setup()
         return self.gui_root

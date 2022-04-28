@@ -61,6 +61,7 @@ def prepare_kivy(node_config):
         Config.set('graphics', 'rotation', node_config.orientation)
 
     Config.set('kivy', 'keyboard_mode', 'systemandmulti')
+    Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 
     from kivy.support import install_twisted_reactor
     install_twisted_reactor()
