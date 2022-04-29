@@ -4,6 +4,7 @@ import os
 import shutil
 import appdirs
 import warnings
+from collections import namedtuple
 
 from kivy.uix.boxlayout import BoxLayout
 
@@ -14,6 +15,13 @@ from .base import BackgroundProviderBase
 from .image import ImageBackgroundProvider
 from .color import ColorBackgroundProvider
 from .structured import StructuredBackgroundProvider
+
+
+# TODO This is here, but not particularly tested. Expect it to only work for video.
+# In general, background sequencing should be handled outside the Background code or
+# by dedicated infrastructure with effectively allows gui_bg to accept a list of this class.
+BackgroundSpec = namedtuple('BackgroundSpec', ["target", "bgcolor", "callback", "duration"],
+                            defaults=[None, None, None])
 
 
 class BackgroundGuiMixin(BaseGuiMixin):
@@ -97,6 +105,12 @@ class BackgroundGuiMixin(BaseGuiMixin):
     @gui_bg.setter
     def gui_bg(self, value):
         self.log.info("Setting background to {value}", value=value)
+        bgcolor, callback, duration = None, None, None
+        if isinstance(value, BackgroundSpec):
+            value, bgcolor, callback, duration = value
+
+        if not bgcolor:
+            bgcolor = self.config.image_bgcolor
 
         provider = self._get_provider(value)
 
@@ -106,15 +120,14 @@ class BackgroundGuiMixin(BaseGuiMixin):
             provider = self._get_provider(value)
             self.log.warn("Using {} instead.".format(value))
 
-        if value == self._bg_current:
-            return
-
         self.log.debug("Using {} to show background {}".format(provider, value))
         self.gui_bg_clear()
 
         self._bg_current = value
         self._bg_current_provider = provider
-        self._bg = self._bg_current_provider.play(value, bgcolor=self.config.image_bgcolor)
+        self._bg = self._bg_current_provider.play(
+            value, bgcolor=bgcolor, callback=callback, duration=duration
+        )
         self.gui_bg_container.add_widget(self._bg)
 
     def gui_bg_update(self):
