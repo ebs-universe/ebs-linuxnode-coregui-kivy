@@ -34,10 +34,12 @@ class ColorBackgroundProvider(BackgroundProviderBase):
             return False
         return True
 
-    def play(self, target, **kwargs):
+    def play(self, target, duration=None, callback=None, **kwargs):
         if isinstance(target, str):
             target = self._parse_color_str(target)
         self._widget = ColorBoxLayout(bgcolor=target)
+        if duration and callback:
+            self.actual.reactor.callLater(duration, callback)
         return self._widget
 
     def stop(self):

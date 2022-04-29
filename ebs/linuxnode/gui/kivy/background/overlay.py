@@ -4,10 +4,10 @@ import os
 from kivy.core.window import Window
 from ebs.linuxnode.core.config import ElementSpec, ItemSpec
 
-from .manager import BackgroundGuiMixin
+from .sequence import BackgroundSequenceMixin
 
 
-class OverlayWindowGuiMixin(BackgroundGuiMixin):
+class OverlayWindowGuiMixin(BackgroundSequenceMixin):
     # Overlay mode needs specific host support.
     # RPi :
     #   See DISPMANX layers and
