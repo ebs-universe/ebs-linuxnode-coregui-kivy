@@ -67,10 +67,6 @@ class BackgroundGuiMixin(BaseGuiMixin):
         return provider
 
     def background_set(self, target):
-        warnings.warn("Deprecated access to background_set. Background config "
-                      "and resource management needs to be separately managed "
-                      "by calling code.")
-
         if not target:
             target = None
 
@@ -79,7 +75,7 @@ class BackgroundGuiMixin(BaseGuiMixin):
             self.log.warn("Provider not found for background {}. Not Setting.".format(target))
             target = None
 
-        if self.config.background != target:
+        if target and self.config.background != target:
             self.config.background = target
 
         self.gui_bg_update()
@@ -130,9 +126,6 @@ class BackgroundGuiMixin(BaseGuiMixin):
         )
         self.gui_bg_container.add_widget(self._bg)
 
-    def gui_bg_update(self):
-        self.gui_bg = self.config.background
-
     def gui_bg_pause(self):
         self.log.debug("Pausing Background")
         self.gui_main_content.remove_widget(self._bg_container)
@@ -151,6 +144,9 @@ class BackgroundGuiMixin(BaseGuiMixin):
             self._bg_current_provider.stop()
         super(BackgroundGuiMixin, self).stop()
 
+    def gui_bg_update(self):
+        self.gui_bg = self.config.background
+
     def gui_setup(self):
         super(BackgroundGuiMixin, self).gui_setup()
-        self.gui_bg = self.config.background
+        self.gui_bg_update()

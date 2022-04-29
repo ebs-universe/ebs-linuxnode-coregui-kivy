@@ -37,3 +37,9 @@ class BackgroundSequenceMixin(BackgroundGuiMixin):
         spec = BackgroundSpec(target, bgcolor, callback, duration)
         self.log.debug("BG Sequence Step : {}".format(spec))
         self.gui_bg = spec
+
+    def gui_bg_update(self):
+        if False:
+            self.gui_bg_sequence = []
+        else:
+            super(BackgroundSequenceMixin, self).gui_bg_update()
