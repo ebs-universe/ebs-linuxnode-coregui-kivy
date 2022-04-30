@@ -19,7 +19,7 @@ class BackgroundProviderBase(object):
         # if the target exists.
         raise NotImplementedError
 
-    def play(self, target, **kwargs):
+    def play(self, target, duration=None, callback=None, **kwargs):
         # Create a Widgetized Background and return it.
         # It will be attached later.
         raise NotImplementedError

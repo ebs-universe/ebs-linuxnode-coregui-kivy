@@ -1,6 +1,7 @@
 
 
 import os
+import subprocess
 from kivy.core.window import Window
 from ebs.linuxnode.core.config import ElementSpec, ItemSpec
 
@@ -9,6 +10,7 @@ from .sequence import BackgroundSequenceMixin
 
 class OverlayWindowGuiMixin(BackgroundSequenceMixin):
     # Overlay mode needs specific host support.
+    # At present, this never works for all practical purposes.
     # RPi :
     #   See DISPMANX layers and
     #   http://codedesigner.de/articles/omxplayer-kivy-overlay/index.html
@@ -19,7 +21,7 @@ class OverlayWindowGuiMixin(BackgroundSequenceMixin):
     #   Unknown, see
     #   - https://github.com/kivy/kivy/issues/4307
     #   - https://github.com/kivy/kivy/pull/5252
-    _gui_supports_overlay_mode = False
+    _gui_supports_overlay_mode = True
 
     def __init__(self, *args, **kwargs):
         self._overlay_mode = None
@@ -30,8 +32,9 @@ class OverlayWindowGuiMixin(BackgroundSequenceMixin):
         super(OverlayWindowGuiMixin, self).install()
         _elements = {
             'overlay_mode': ElementSpec('display', 'overlay_mode', ItemSpec(bool, fallback=False)),
-            'show_foundation': ElementSpec('display-rpi', 'show_foundation', ItemSpec(bool, fallback=True)),
-            'dispmanx_foundation_layer': ElementSpec('display-rpi', 'dispmanx_foundation_layer', ItemSpec(int, fallback=1)),
+            'show_foundation': ElementSpec('display-rpi', 'show_foundation', ItemSpec(bool, fallback=False)),
+            'dispmanx_foundation_layer': ElementSpec('display-rpi', 'dispmanx_foundation_layer',
+                                                     ItemSpec(int, fallback=-250)),
             'foundation_image': ElementSpec('display-rpi', 'foundation_image', ItemSpec(fallback=None)),
         }
         for name, spec in _elements.items():
@@ -57,16 +60,16 @@ class OverlayWindowGuiMixin(BackgroundSequenceMixin):
         if self._overlay_mode:
             return
         self._overlay_mode = True
+        self.gui_bg_pause()
         Window.clearcolor = [0, 0, 0, 0]
-        # self.gui_bg_pause()
 
     def _gui_overlay_mode_exit(self):
         self.log.info('Exiting Overlay Mode')
         if not self._overlay_mode:
             return
         self._overlay_mode = False
-        # self.gui_bg_resume()
         Window.clearcolor = [0, 0, 0, 1]
+        self.gui_bg_resume()
 
     def stop(self):
         if self._foundation_process:
@@ -79,7 +82,7 @@ class OverlayWindowGuiMixin(BackgroundSequenceMixin):
         if self.config.show_foundation and \
                 self.config.foundation_image and \
                 os.path.exists(self.config.foundation_image):
-            cmd = ['pngview', '-l', str(self.config.dispmanx_foundation_layer),
+            cmd = ['pngview', '-l', '"{}"'.format(str(self.config.dispmanx_foundation_layer)),
                    '-n', self.config.foundation_image]
             self._foundation_process = subprocess.Popen(cmd)
 

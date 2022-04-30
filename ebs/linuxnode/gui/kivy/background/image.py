@@ -17,13 +17,15 @@ class ImageBackgroundProvider(BackgroundProviderBase):
             return False
         return True
 
-    def play(self, target, **kwargs):
+    def play(self, target, duration=None, callback=None, **kwargs):
         self._widget = BleedImage(
             source=target,
             allow_stretch=True,
             keep_ratio=True,
             **kwargs
         )
+        if duration and callback:
+            self.actual.reactor.callLater(duration, callback)
         return self._widget
 
     def stop(self):

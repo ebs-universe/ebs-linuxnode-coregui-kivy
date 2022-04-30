@@ -38,6 +38,20 @@ class BackgroundSequenceMixin(BackgroundGuiMixin):
         self.log.debug("BG Sequence Step : {}".format(spec))
         self.gui_bg = spec
 
+    def background_sequence_set(self, targets):
+        if not targets:
+            targets = []
+
+        for target in targets:
+            provider = self._get_provider(target)
+            if not provider:
+                self.log.warn("Provider not found for background {}. Not Setting.".format(target))
+                targets.remove(target)
+
+        # TODO Establish Peristence
+
+        self.gui_bg_update()
+
     def gui_bg_update(self):
         if False:
             self.gui_bg_sequence = []
