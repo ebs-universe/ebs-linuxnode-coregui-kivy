@@ -26,10 +26,13 @@ class BaseIoTNodeGui(NodeIDGuiMixin,
         self.config.register_application_root(
             os.path.abspath(os.path.dirname(__file__))
         )
-        if hasattr(self, 'sysinfo'):
-            self.sysinfo.app.versions.register_package('kivy')
-            self.sysinfo.app.versions.register_namespace('kivy-garden')
 
-    def gui_setup(self):
+    def sysinfo_install(self):
+        super(BaseIoTNodeGui, self).sysinfo_install()
+        self.sysinfo.app.versions.register_package('kivy')
+        self.sysinfo.app.versions.register_namespace('kivy-garden')
+
+
+def gui_setup(self):
         super(BaseIoTNodeGui, self).gui_setup()
         return self.gui_root
