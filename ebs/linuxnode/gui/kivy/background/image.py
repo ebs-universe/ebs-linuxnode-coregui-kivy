@@ -24,15 +24,5 @@ class ImageBackgroundProvider(BackgroundProviderBase):
             keep_ratio=True,
             **kwargs
         )
-        if duration and callback:
-            self.actual.reactor.callLater(duration, callback)
+        super(ImageBackgroundProvider, self).play(target, duration, callback, **kwargs)
         return self._widget
-
-    def stop(self):
-        self._widget = None
-
-    def pause(self):
-        pass
-
-    def resume(self):
-        pass

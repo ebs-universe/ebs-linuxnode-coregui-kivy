@@ -38,15 +38,5 @@ class ColorBackgroundProvider(BackgroundProviderBase):
         if isinstance(target, str):
             target = self._parse_color_str(target)
         self._widget = ColorBoxLayout(bgcolor=target)
-        if duration and callback:
-            self.actual.reactor.callLater(duration, callback)
+        super(ColorBackgroundProvider, self).play(target, duration, callback, **kwargs)
         return self._widget
-
-    def stop(self):
-        self._widget = None
-
-    def pause(self):
-        pass
-
-    def resume(self):
-        pass
