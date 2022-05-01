@@ -12,6 +12,7 @@ class BackgroundProviderBase(object):
         self._end_call = None
         self._paused = False
         self._eresidual = None
+        self._callback = None
 
     @property
     def actual(self):
@@ -29,6 +30,7 @@ class BackgroundProviderBase(object):
         # Create a Widgetized Background and return it.
         # It will be attached later.
         if duration and callback:
+            self._callback = callback
             self._end_call = self.actual.reactor.callLater(duration, callback)
 
     def stop(self):
@@ -57,5 +59,5 @@ class BackgroundProviderBase(object):
             return
         self._paused = False
         if self._eresidual:
-            self._end_call = self.actual.reactor.callLater(self._eresidual, self.stop)
+            self._end_call = self.actual.reactor.callLater(self._eresidual, self._callback)
             self._eresidual = None
