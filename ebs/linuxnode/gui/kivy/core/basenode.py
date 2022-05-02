@@ -32,7 +32,6 @@ class BaseIoTNodeGui(NodeIDGuiMixin,
         self.sysinfo.app.versions.register_package('kivy')
         self.sysinfo.app.versions.register_namespace('kivy-garden')
 
-
-def gui_setup(self):
+    def gui_setup(self):
         super(BaseIoTNodeGui, self).gui_setup()
         return self.gui_root
