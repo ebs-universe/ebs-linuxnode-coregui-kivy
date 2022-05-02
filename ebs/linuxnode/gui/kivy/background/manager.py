@@ -114,7 +114,13 @@ class BackgroundGuiMixin(BaseGuiMixin):
             self.log.warn("Provider not found for background {}".format(value))
             value = self.config.background
             provider = self._get_provider(value)
-            self.log.warn("Using {} instead.".format(value))
+            self.log.warn("Tryin to use {} instead.".format(value))
+
+        if not provider:
+            self.log.warn("Unable to display config background. Clearing from config.")
+            self.config.remove('background')
+            value = self.config.background
+            provider = self._get_provider(value)
 
         self.log.debug("Using {} to show background {}".format(provider, value))
         self.gui_bg_clear()
