@@ -33,4 +33,4 @@ class ExampleNode(BaseIoTNodeGui):
 
     def start(self):
         super(ExampleNode, self).start()
-        self._overlay_examples()
+        self._background_examples()

@@ -1,7 +1,7 @@
 
 
 import os
-from ebs.linuxnode.gui.kivy.background.mixin import OverlayWindowGuiMixin
+from ebs.linuxnode.gui.kivy.background.mixin import BackgroundMixin
 from .text import FontsGuiMixin
 from .log import LoggingGuiMixin
 from .busy import BusySpinnerGuiMixin
@@ -11,9 +11,9 @@ from .display import DisplayMixin
 
 class BaseIoTNodeGui(NodeIDGuiMixin,
                      BusySpinnerGuiMixin,
+                     BackgroundMixin,
                      LoggingGuiMixin,
                      FontsGuiMixin,
-                     OverlayWindowGuiMixin,
                      DisplayMixin):
 
     def __init__(self, *args, **kwargs):

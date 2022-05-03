@@ -3,7 +3,6 @@
 import os
 import shutil
 import appdirs
-import warnings
 from collections import namedtuple
 
 from kivy.uix.boxlayout import BoxLayout
@@ -145,6 +144,10 @@ class BackgroundGuiMixin(BaseGuiMixin):
         if not self._bg_container.parent:
             self.gui_main_content.add_widget(self._bg_container, len(self.gui_main_content.children))
 
+    def start(self):
+        super(BackgroundGuiMixin, self).start()
+        self.reactor.callLater(3, self.gui_bg_update)
+
     def stop(self):
         if self._bg_current_provider:
             self._bg_current_provider.stop()
@@ -154,5 +157,6 @@ class BackgroundGuiMixin(BaseGuiMixin):
         self.gui_bg = self.config.background
 
     def gui_setup(self):
-        super(BackgroundGuiMixin, self).gui_setup()
-        self.gui_bg_update()
+        gui = super(BackgroundGuiMixin, self).gui_setup()
+        _ = self.gui_bg_container
+        return gui

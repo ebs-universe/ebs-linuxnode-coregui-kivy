@@ -53,7 +53,4 @@ class BackgroundSequenceMixin(BackgroundGuiMixin):
         self.gui_bg_update()
 
     def gui_bg_update(self):
-        if False:
-            self.gui_bg_sequence = []
-        else:
-            super(BackgroundSequenceMixin, self).gui_bg_update()
+        super(BackgroundSequenceMixin, self).gui_bg_update()
