@@ -3,7 +3,7 @@
 import os
 from kivy_garden.ebs.core.image import BleedImage
 
-from .base import BackgroundProviderBase
+from ebs.linuxnode.core.background import BackgroundProviderBase
 
 
 class ImageBackgroundProvider(BackgroundProviderBase):

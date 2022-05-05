@@ -2,8 +2,8 @@
 
 from itertools import cycle
 
-from .manager import BackgroundGuiMixin
-from .manager import BackgroundSpec
+from .mixin import BackgroundGuiMixin
+from ebs.linuxnode.core.background import BackgroundProviderBase
 
 
 class BackgroundSequenceMixin(BackgroundGuiMixin):

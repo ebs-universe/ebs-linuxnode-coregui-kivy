@@ -1,6 +1,6 @@
 
 
-from .base import BackgroundProviderBase
+from ebs.linuxnode.core.background import BackgroundProviderBase
 
 
 class StructuredBackgroundProvider(BackgroundProviderBase):

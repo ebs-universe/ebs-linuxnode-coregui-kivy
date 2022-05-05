@@ -11,7 +11,7 @@ class ExampleNode(BaseIoTNodeGui):
         return SimpleDigitalClock()
 
     def _set_bg(self, target):
-        self.gui_bg = target
+        self.bg = target
 
     def _background_examples(self):
         reactor.callLater(10, self._set_bg, '1.0:0.5:0.5:1.0')

@@ -3,7 +3,7 @@
 from numbers import Number
 from kivy_garden.ebs.core.colors import ColorBoxLayout
 
-from .base import BackgroundProviderBase
+from ebs.linuxnode.core.background import BackgroundProviderBase
 
 
 class ColorBackgroundProvider(BackgroundProviderBase):
