@@ -3,13 +3,11 @@
 import os
 import shutil
 import appdirs
-from six.moves.urllib.parse import urlparse
 
 from kivy.uix.boxlayout import BoxLayout
 
 from ebs.linuxnode.core.config import ElementSpec, ItemSpec
 from ebs.linuxnode.core.background import BackgroundCoreMixin
-from ebs.linuxnode.core.background import BackgroundProviderBase
 from ebs.linuxnode.gui.kivy.core.basemixin import BaseGuiMixin
 
 from .image import ImageBackgroundProvider
