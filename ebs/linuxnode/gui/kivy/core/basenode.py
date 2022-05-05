@@ -35,3 +35,6 @@ class BaseIoTNodeGui(NodeIDGuiMixin,
     def gui_setup(self):
         super(BaseIoTNodeGui, self).gui_setup()
         return self.gui_root
+
+    def exit(self):
+        self._application.stop()
