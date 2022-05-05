@@ -3,6 +3,8 @@
 import os
 import shutil
 import appdirs
+from six.moves.urllib.parse import urlparse
+
 from collections import namedtuple
 
 from kivy.uix.boxlayout import BoxLayout
@@ -75,6 +77,11 @@ class BackgroundGuiMixin(BaseGuiMixin):
             target = None
 
         if target and self.config.background != target:
+            old_bg = urlparse(self.config.background)
+            if not old_bg.scheme:
+                old_fname = os.path.basename(old_bg.path)
+                if self.resource_manager.has(old_fname):
+                    self.resource_manager.remove(old_fname)
             self.config.background = target
 
         self.gui_bg_update()
