@@ -51,8 +51,7 @@ class NodeIDGuiMixin(BaseGuiMixin):
         if self.gui_id_tag.parent:
             self.gui_status_stack.remove_widget(self.gui_id_tag)
 
-    def gui_setup(self):
-        super(NodeIDGuiMixin, self).gui_setup()
+    def _gui_nodeid_start(self):
         if not self.config.node_id_display:
             return
         if self.config.node_id_display_frequency:
@@ -63,3 +62,10 @@ class NodeIDGuiMixin(BaseGuiMixin):
             self._gui_id_task.start(self.config.node_id_display_frequency)
         else:
             self.gui_id_show(duration=self.config.node_id_display_duration)
+
+    def start(self):
+        super(NodeIDGuiMixin, self).start()
+        self.reactor.callWhenRunning(self._gui_nodeid_start)
+
+    def gui_setup(self):
+        super(NodeIDGuiMixin, self).gui_setup()
