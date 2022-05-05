@@ -11,9 +11,9 @@ from .display import DisplayMixin
 
 class BaseIoTNodeGui(NodeIDGuiMixin,
                      BusySpinnerGuiMixin,
-                     BackgroundMixin,
                      LoggingGuiMixin,
                      FontsGuiMixin,
+                     BackgroundMixin,
                      DisplayMixin):
 
     def __init__(self, *args, **kwargs):

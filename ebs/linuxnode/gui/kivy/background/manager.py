@@ -104,6 +104,9 @@ class BackgroundGuiMixin(BaseGuiMixin):
         if isinstance(value, BackgroundSpec):
             value, bgcolor, callback, duration = value
 
+        if self._bg_current == value and not callback and not duration:
+            return
+
         if not bgcolor:
             bgcolor = self.config.image_bgcolor
 
@@ -113,7 +116,7 @@ class BackgroundGuiMixin(BaseGuiMixin):
             self.log.warn("Provider not found for background {}".format(value))
             value = self.config.background
             provider = self._get_provider(value)
-            self.log.warn("Tryin to use {} instead.".format(value))
+            self.log.warn("Trying to use {} instead.".format(value))
 
         if not provider:
             self.log.warn("Unable to display config background. Clearing from config.")
@@ -144,6 +147,9 @@ class BackgroundGuiMixin(BaseGuiMixin):
         if not self._bg_container.parent:
             self.gui_main_content.add_widget(self._bg_container, len(self.gui_main_content.children))
 
+    def gui_bg_update(self):
+        self.gui_bg = self.config.background
+
     def start(self):
         super(BackgroundGuiMixin, self).start()
         self.reactor.callLater(3, self.gui_bg_update)
@@ -152,9 +158,6 @@ class BackgroundGuiMixin(BaseGuiMixin):
         if self._bg_current_provider:
             self._bg_current_provider.stop()
         super(BackgroundGuiMixin, self).stop()
-
-    def gui_bg_update(self):
-        self.gui_bg = self.config.background
 
     def gui_setup(self):
         gui = super(BackgroundGuiMixin, self).gui_setup()
