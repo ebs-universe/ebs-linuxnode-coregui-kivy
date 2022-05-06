@@ -25,10 +25,10 @@ setuptools.setup(
     long_description='',
 
     packages=setuptools.find_packages(),
-    package_dir={'ebs.linuxnode.gui.kivy.core': 'ebs/linuxnode/gui/kivy/core'},
-    package_data={'ebs.linuxnode.gui.kivy.core': ['images/background.png',
-                                                  'images/no-internet.png',
-                                                  'images/no-server.png']},
+    package_dir={'ebs.linuxnode.gui.kivy.core': 'ebs/linuxnode/gui/kivy/core',
+                 'ebs.linuxnode.gui.kivy.background': 'ebs/linuxnode/gui/kivy/background',
+                 'ebs.linuxnode.gui.kivy.utils': 'ebs/linuxnode/gui/kivy/utils'},
+    package_data={'ebs.linuxnode.gui.kivy.background': ['images/background.png']},
 
     install_requires=_requires,
 

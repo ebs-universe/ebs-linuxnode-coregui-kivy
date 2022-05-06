@@ -23,7 +23,7 @@ class BackgroundGuiMixin(BaseGuiMixin, BackgroundCoreMixin):
     def _background_fallback(self):
         _path = os.path.abspath(os.path.dirname(__file__))
         fallback_default = os.path.join(_path, 'images/background.png')
-        fallback = os.path.join(appdirs.user_config_dir(self.config.appname), 'background.png')
+        fallback = os.path.join(self.config_dir, 'background.png')
         if not os.path.exists(fallback):
             shutil.copy(fallback_default, fallback)
         return fallback
@@ -54,8 +54,9 @@ class BackgroundGuiMixin(BaseGuiMixin, BackgroundCoreMixin):
 
     @BackgroundCoreMixin.bg.setter
     def bg(self, value):
-        BackgroundCoreMixin.bg.fset(self, value)
-        self.gui_bg_container.add_widget(self._bg)
+        updated = BackgroundCoreMixin.bg.fset(self, value)
+        if updated:
+            self.gui_bg_container.add_widget(self._bg)
 
     def bg_pause(self):
         self.gui_main_content.remove_widget(self._bg_container)
