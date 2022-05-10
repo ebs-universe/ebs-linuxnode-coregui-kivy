@@ -2,7 +2,6 @@
 
 import os
 import shutil
-import appdirs
 
 from kivy.uix.boxlayout import BoxLayout
 
