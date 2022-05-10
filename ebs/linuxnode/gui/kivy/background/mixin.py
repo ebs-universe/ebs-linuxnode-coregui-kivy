@@ -29,8 +29,12 @@ class BackgroundGuiMixin(BaseGuiMixin, BackgroundCoreMixin):
 
     def install(self):
         super(BackgroundGuiMixin, self).install()
+        if self.config.platform == 'rpi':
+            fallback = '0:0:0:1'
+        else:
+            fallback = 'auto'
         _elements = {
-            'image_bgcolor': ElementSpec('display', 'image_bgcolor', ItemSpec('kivy_color', fallback='auto')),
+            'image_bgcolor': ElementSpec('display', 'image_bgcolor', ItemSpec('kivy_color', fallback=fallback)),
         }
         for name, spec in _elements.items():
             self.config.register_element(name, spec)
