@@ -33,4 +33,3 @@ class ExampleNode(BaseIoTNodeGui):
 
     def start(self):
         super(ExampleNode, self).start()
-        self._background_examples()
