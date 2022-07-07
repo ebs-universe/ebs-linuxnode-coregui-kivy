@@ -14,10 +14,12 @@ from ebs.linuxnode.core.config import ItemSpec
 
 
 class BaseGuiStructureMixin(BaseIoTNode):
+    _gui_supports_overlay_mode = False
+
     def __init__(self, *args, **kwargs):
         self._gui_root = None
         self._gui_structure_root = None
-        self._gui_primary_root = None
+        self._gui_primary_anchor = None
         self._gui_footer = None
         self._gui_anchor_br = None
         self._gui_anchor_bl = None
@@ -55,7 +57,7 @@ class BaseGuiStructureMixin(BaseIoTNode):
             self._gui_anchor_br = AnchorLayout(anchor_x='right',
                                                anchor_y='bottom',
                                                pos_hint={'pos': [0, 0]})
-            self.gui_primary_root.add_widget(self._gui_anchor_br)
+            self.gui_primary_anchor.add_widget(self._gui_anchor_br)
         return self._gui_anchor_br
 
     @property
@@ -64,7 +66,7 @@ class BaseGuiStructureMixin(BaseIoTNode):
             self._gui_anchor_bl = AnchorLayout(anchor_x='left',
                                                anchor_y='bottom',
                                                pos_hint={'pos': [0, 0]})
-            self.gui_primary_root.add_widget(self._gui_anchor_bl)
+            self.gui_primary_anchor.add_widget(self._gui_anchor_bl)
         return self._gui_anchor_bl
 
     @property
@@ -73,7 +75,7 @@ class BaseGuiStructureMixin(BaseIoTNode):
             self._gui_anchor_tr = AnchorLayout(anchor_x='right',
                                                anchor_y='top',
                                                pos_hint={'pos': [0, 0]})
-            self.gui_primary_root.add_widget(self._gui_anchor_tr)
+            self.gui_primary_anchor.add_widget(self._gui_anchor_tr)
         return self._gui_anchor_tr
 
     @property
@@ -121,7 +123,7 @@ class BaseGuiStructureMixin(BaseIoTNode):
     @property
     def gui_footer(self):
         if not self._gui_footer:
-            _ = self.gui_primary_root
+            _ = self.gui_primary_anchor
             self._gui_footer = BoxLayout(
                 orientation='vertical', size_hint=(1, None),
                 height=80, padding=['0sp', '0sp', '0sp', '8sp']
@@ -137,11 +139,11 @@ class BaseGuiStructureMixin(BaseIoTNode):
             self.gui_structure_root.remove_widget(self._gui_footer)
 
     @property
-    def gui_primary_root(self):
-        if not self._gui_primary_root:
-            self._gui_primary_root = FloatLayout()
-            self.gui_structure_root.add_widget(self._gui_primary_root)
-        return self._gui_primary_root
+    def gui_primary_anchor(self):
+        if not self._gui_primary_anchor:
+            self._gui_primary_anchor = FloatLayout()
+            self.gui_structure_root.add_widget(self._gui_primary_anchor)
+        return self._gui_primary_anchor
 
     @property
     def gui_structure_root(self):
