@@ -11,7 +11,7 @@ _requires = [
     'kivy_garden.ebs.core>=1.3.0',
     'kivy_garden.ebs.progressspinner>=1.2.0',
 
-    'ebs-linuxnode-core>=3.0.4',
+    'ebs-linuxnode-core>=3.1.6',
 ]
 
 setuptools.setup(
