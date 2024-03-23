@@ -43,13 +43,13 @@ class NodeIDGuiMixin(BaseGuiMixin):
 
     def gui_id_show(self, duration=None):
         if not self.gui_id_tag.parent:
-            self.gui_status_stack.add_widget(self.gui_id_tag)
+            self.gui_status_row.add_widget(self.gui_id_tag)
         if duration:
             self.reactor.callLater(duration, self.gui_id_hide)
 
     def gui_id_hide(self):
         if self.gui_id_tag.parent:
-            self.gui_status_stack.remove_widget(self.gui_id_tag)
+            self.gui_status_row.remove_widget(self.gui_id_tag)
 
     def _gui_nodeid_start(self):
         if not self.config.node_id_display:
