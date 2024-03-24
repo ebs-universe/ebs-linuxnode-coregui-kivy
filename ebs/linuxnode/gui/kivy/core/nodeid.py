@@ -17,6 +17,7 @@ class NodeIDGuiMixin(BaseGuiMixin):
         super(NodeIDGuiMixin, self).__init__(*args, **kwargs)
         self._gui_id_tag = None
         self._gui_id_task = None
+        self._gui_id_hider = None
 
     def install(self):
         super(NodeIDGuiMixin, self).install()
@@ -44,8 +45,10 @@ class NodeIDGuiMixin(BaseGuiMixin):
     def gui_id_show(self, duration=None):
         if not self.gui_id_tag.parent:
             self.gui_status_row.add_widget(self.gui_id_tag)
-        if duration:
-            self.reactor.callLater(duration, self.gui_id_hide)
+            if duration:
+                self._gui_id_hider = self.reactor.callLater(duration, self.gui_id_hide)
+        elif not duration and self._gui_id_hider:
+            self._gui_id_hider.cancel()
 
     def gui_id_hide(self):
         if self.gui_id_tag.parent:
