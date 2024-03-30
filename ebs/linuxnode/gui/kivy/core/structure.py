@@ -117,6 +117,9 @@ class BaseGuiStructureMixin(BaseIoTNode):
         if not self._gui_primary_anchor:
             self._gui_primary_anchor = FloatLayout()
             self.gui_structure_root.add_widget(self._gui_primary_anchor)
+            _ = self.gui_anchor_top_right
+            _ = self.gui_anchor_bottom_left
+            _ = self.gui_anchor_bottom_right
         return self._gui_primary_anchor
 
     @property
@@ -207,20 +210,20 @@ class BaseGuiStructureMixin(BaseIoTNode):
         return self._gui_footer
 
     def _gui_footer_show(self):
-        if not self._gui_footer.parent:
+        if not self.gui_footer.parent:
             self._gui_structure_heights['footer'] = 80
             if self._gui_supports_overlay_mode:
-                self._gui_structure_root.add_widget(self._gui_footer)
+                self.gui_structure_root.add_widget(self.gui_footer)
             else:
-                self.gui_primary_anchor.add_widget(self._gui_footer)
+                self.gui_primary_anchor.add_widget(self.gui_footer, index=len(self.gui_primary_anchor.children))
 
     def _gui_footer_hide(self):
-        if self._gui_footer.parent:
+        if self.gui_footer.parent:
             self._gui_structure_heights['footer'] = 0
             if self._gui_supports_overlay_mode:
-                self._gui_structure_root.remove_widget(self._gui_footer)
+                self.gui_structure_root.remove_widget(self.gui_footer)
             else:
-                self.gui_primary_anchor.remove_widget(self._gui_footer)
+                self.gui_primary_anchor.remove_widget(self.gui_footer)
 
     def _gui_footer_trigger(self):
         if len(self._gui_footer_users):
