@@ -33,7 +33,7 @@ class NodeIDGuiMixin(BaseGuiMixin):
     def gui_id_tag(self):
         if not self._gui_id_tag:
             params = {'bgcolor': (self._gui_nodeid_bgcolor or
-                                  color_set_alpha(self.gui_color_1, 0.4)),
+                                  color_set_alpha(self.gui_color_1, self.gui_tag_alpha)),
                       'color': [1, 1, 1, 1]}
             self._gui_id_tag = ColorLabel(
                 text=self.id, size_hint=(None, None),

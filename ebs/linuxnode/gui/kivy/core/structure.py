@@ -109,8 +109,8 @@ class BaseGuiStructureMixin(BaseIoTNode):
             return
         self._gui_structure_root.height = max([
             self._gui_structure_heights.get('status', 0),
-            self._gui_structure_heights.get('notification', 0)]) \
-            + self._gui_structure_heights.get('footer', 0)
+            self._gui_structure_heights.get('notification', 0), \
+            self._gui_structure_heights.get('footer', 0)])
 
     @property
     def gui_primary_anchor(self):
@@ -145,6 +145,13 @@ class BaseGuiStructureMixin(BaseIoTNode):
                                                pos_hint={'pos': [0, 0]})
             self.gui_primary_anchor.add_widget(self._gui_anchor_tr)
         return self._gui_anchor_tr
+
+    @property
+    def gui_tag_alpha(self):
+        if self._gui_supports_overlay_mode:
+            return 0.4
+        else:
+            return 0.8
 
     @property
     def gui_status_row(self):
@@ -195,19 +202,25 @@ class BaseGuiStructureMixin(BaseIoTNode):
             _ = self.gui_primary_anchor
             self._gui_footer = BoxLayout(
                 orientation='vertical', size_hint=(1, None),
-                height=80, padding=['0sp', '0sp', '0sp', '8sp']
+                height=60, padding=['0sp', '0sp', '0sp', '0sp']
             )
         return self._gui_footer
 
     def _gui_footer_show(self):
         if not self._gui_footer.parent:
             self._gui_structure_heights['footer'] = 80
-            self.gui_structure_root.add_widget(self._gui_footer)
+            if self._gui_supports_overlay_mode:
+                self._gui_structure_root.add_widget(self._gui_footer)
+            else:
+                self.gui_primary_anchor.add_widget(self._gui_footer)
 
     def _gui_footer_hide(self):
         if self._gui_footer.parent:
             self._gui_structure_heights['footer'] = 0
-            self.gui_structure_root.remove_widget(self._gui_footer)
+            if self._gui_supports_overlay_mode:
+                self._gui_structure_root.remove_widget(self._gui_footer)
+            else:
+                self.gui_primary_anchor.remove_widget(self._gui_footer)
 
     def _gui_footer_trigger(self):
         if len(self._gui_footer_users):
