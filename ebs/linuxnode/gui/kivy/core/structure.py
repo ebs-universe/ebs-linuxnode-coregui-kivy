@@ -211,7 +211,7 @@ class BaseGuiStructureMixin(BaseIoTNode):
 
     def _gui_footer_show(self):
         if not self.gui_footer.parent:
-            self._gui_structure_heights['footer'] = 80
+            self._gui_structure_heights['footer'] = 60
             if self._gui_supports_overlay_mode:
                 self.gui_structure_root.add_widget(self.gui_footer)
             else:
